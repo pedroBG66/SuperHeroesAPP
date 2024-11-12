@@ -1,6 +1,7 @@
 package com.example.superheroesapp.services
 
 import com.example.superheroesapp.data.HeroesResponse
+import com.example.superheroesapp.data.PowerStats
 import com.example.superheroesapp.data.SuperHero
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,5 +16,8 @@ interface HeroesService {
 
     @GET("{character-id}")
     suspend fun findSuperHeroById (@Path("character-id") id: String) : SuperHero
+
+    @GET("{id}/powerstats")
+    suspend fun findStats (@Path("id") id: String) : PowerStats
 
 }
