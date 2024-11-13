@@ -11,10 +11,10 @@ data class HeroesResponse (
 
 //como results es un array de objetos hay que crear una clase que contenga esos datos
 
-    data class SuperHero(
-        @SerializedName ("id") val id: String,
+data class SuperHero(
         @SerializedName ("name") val name: String,
         @SerializedName("powerstats") val powerStats: PowerStats,
+        @SerializedName ("id") val id: String,
         @SerializedName("biography") val biography: Biography,
         @SerializedName("appearance") val appearance: Appearance,
         @SerializedName("work") val work: Work,

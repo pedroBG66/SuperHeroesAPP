@@ -1,11 +1,14 @@
 package com.example.superheroesapp.adaters
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import androidx.viewbinding.ViewBinding
 import com.example.superheroesapp.data.SuperHero
+import com.example.superheroesapp.databinding.ItemSuperheroBinding
+import com.squareup.picasso.Picasso
 
-class SuperHeroAdapter (var items : List<SuperHero>) : RecyclerView.adapter<ViewHolder> () {
+
+class SuperheroAdapter(var items: List<SuperHero>) : RecyclerView.Adapter<ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val superhero = items[position]
         holder.render(superhero)
@@ -20,10 +23,16 @@ class SuperHeroAdapter (var items : List<SuperHero>) : RecyclerView.adapter<View
         return items.size
     }
 
-    fun updateItems(items: List<Superhero>) {
+    fun updateItems(items: List<SuperHero>) {
         this.items = items
         notifyDataSetChanged()
     }
 }
 
-class ViewHolder (val binding: ViewBinding)
+class ViewHolder(val binding: ItemSuperheroBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    fun render(superhero: SuperHero) {
+        binding.superHeroNameTextView.text = superhero.name
+        Picasso.get().load(superhero.urlImage.url).into(binding.avatarImageView)
+    }
+}

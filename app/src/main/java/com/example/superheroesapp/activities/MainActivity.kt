@@ -13,7 +13,8 @@ import kotlinx.coroutines.withContext
 import android.util.Log
 import android.view.Menu
 import androidx.appcompat.widget.SearchView
-import com.example.superheroesapp.adaters.SuperHeroAdapter
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.superheroesapp.adaters.SuperheroAdapter
 import com.example.superheroesapp.data.SuperHero
 import com.example.superheroesapp.databinding.ActivityMainBinding
 
@@ -22,23 +23,23 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var heroesResults: HeroesResponse
     lateinit var binding: ActivityMainBinding
-    lateinit var adapter: SuperHeroAdapter
+    lateinit var adapter: SuperheroAdapter
 
-    var superheroList: List<Superhero> = emptyList()
+    var superheroList: List<SuperHero> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding= ActivityMainBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
 
-        adapter = SuperHeroAdapter(SuperHero)
+        adapter = SuperheroAdapter(superheroList)
+        binding.recyclerViewLayout.adapter = adapter
+        binding.recyclerViewLayout.layoutManager = GridLayoutManager(this, 2)
 
-
-
-
+        searchSuperHeroes("bat")
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu_activity, menu)
@@ -59,30 +60,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun searchSuperHeroes(query: String) {
-        // Crear la instancia del servicio de Retrofit
         val service = RetrofitProvider.getRetrofit()
 
-        // Manejo de excepciones para la corrutina
-        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            Log.e("MainActivity", "Error en la corrutina", throwable)  // Usa Log.e para errores
-        }
-
-        // Lanzar la corrutina en Dispatchers.IO
-        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             try {
-                // Llamada a la API para obtener resultados
-                heroesResults = service.findSuperHeroByName("batman")
+                val result = service.findSuperHeroByName(query)
 
-                // Volver al hilo principal para registrar en Logcat
-                withContext(Dispatchers.Main) {
-                    if (heroesResults.response == "success") {
-                        Log.d("MainActivity", heroesResults.results[0].id)
+                CoroutineScope(Dispatchers.Main).launch {
+                    if (result.response == "success") {
+                        adapter.updateItems(result.results)
                     } else {
-                        Log.d("MainActivity", "No results found for the given name.")
+                        // TODO: Mostrar mensaje de que no se ha encontrado nada
                     }
                 }
             } catch (e: Exception) {
-                Log.e("MainActivity", "error with the API", e)  // Imprime el error en Logcat
+                Log.e("API", e.stackTraceToString())
             }
         }
     }

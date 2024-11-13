@@ -40,10 +40,11 @@ android {
 
 dependencies {
 
-    val retrofitVersion = "2.11.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
-    implementation ("com.squareup.picasso:picasso:2.8")
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation (libs.picasso)
+    implementation (libs.material.v170)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
