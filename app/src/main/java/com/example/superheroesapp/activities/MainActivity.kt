@@ -5,11 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.superheroesapp.R
 import com.example.superheroesapp.data.HeroesResponse
 import com.example.superheroesapp.utils.RetrofitProvider
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import android.util.Log
 import android.view.Menu
 import androidx.appcompat.widget.SearchView
@@ -21,7 +19,7 @@ import com.example.superheroesapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var heroesResults: HeroesResponse
+
     lateinit var binding: ActivityMainBinding
     lateinit var adapter: SuperheroAdapter
 

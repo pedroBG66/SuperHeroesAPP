@@ -14,7 +14,7 @@ data class HeroesResponse (
 data class SuperHero(
         @SerializedName ("name") val name: String,
         @SerializedName("powerstats") val powerStats: PowerStats,
-        @SerializedName ("id") val id: String,
+        @SerializedName ("id") val id: Int,
         @SerializedName("biography") val biography: Biography,
         @SerializedName("appearance") val appearance: Appearance,
         @SerializedName("work") val work: Work,
@@ -23,12 +23,12 @@ data class SuperHero(
 
 ){}
 data class PowerStats(
-    @SerializedName("intelligence") val intelligence:Int,
-    @SerializedName("strength") val strength:Int,
-    @SerializedName("speed") val speed:Int,
-    @SerializedName("durability") val durability:Int,
-    @SerializedName("power") val power:Int,
-    @SerializedName("combat") val combat:Int
+    @SerializedName("intelligence") val intelligence:String,
+    @SerializedName("strength") val strength:String,
+    @SerializedName("speed") val speed:String,
+    @SerializedName("durability") val durability:String,
+    @SerializedName("power") val power:String,
+    @SerializedName("combat") val combat:String
 )
 data class Biography(
     @SerializedName("full-name") val fullName:String,
