@@ -1,7 +1,14 @@
 package com.example.superheroesapp.activities
 
+import android.animation.Animator
+import android.animation.AnimatorInflater
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.animation.DecelerateInterpolator
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -16,15 +23,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class DestailsActivity : AppCompatActivity() {
+class DetailsActivity : AppCompatActivity() {
 
     companion object {
-         const val EXTRA_SUPERHERO_ID = "SUPERHERO_ID"
+        const val EXTRA_SUPERHERO_ID = "SUPERHERO_ID"
     }
 
     lateinit var binding: ActivityDetailLayoutBinding
 
     lateinit var superhero: SuperHero
+
+    private var isFrontVisible = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,19 +41,46 @@ class DestailsActivity : AppCompatActivity() {
         binding = ActivityDetailLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        supportActionBar?.hide()
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.details_activity)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        val id = intent.getStringExtra(EXTRA_SUPERHERO_ID)!!
+        val id = intent.getIntExtra(EXTRA_SUPERHERO_ID, -1).toString()
 
         getSuperhero(id)
+
+        binding.card.setOnClickListener() {
+            flipCard()
+        }
     }
 
     fun loadData() {
-        supportActionBar?.title = superhero.name
+        binding.superHeroNameTextView.text = superhero.name
+        binding.realNameTextView.text =
+            "Nombre real: ${superhero.biography.fullName ?: "Desconocido"}"
+        binding.birthPlaceTextView.text =
+            "Lugar de nacimiento: ${superhero.biography.placeBirth ?: "Desconocido"}"
+        binding.firstAppearanceTextView.text =
+            "Primera aparición: ${superhero.biography.firstAppearance ?: "Desconocida"}"
+
+
+        binding.genderTextView.text = " ${superhero.appearance.gender ?: "Desconocido"}"
+        binding.heightTextView.text = " ${superhero.appearance.height[1] ?: "Desconocida"}"
+        binding.weightTextView.text = "${superhero.appearance.weight[1] ?: "Desconocido"}"
+        binding.raceTextView.text = "${superhero.appearance.race ?: "Desconocida"}"
+
+        binding.powerStatsTitle.text = "SUPER POWER STATS"
+        binding.powerStatsTextView.text = "${superhero.powerStats.power ?: "Desconocida"}"
+        binding.speedStatsTextView.text = "${superhero.powerStats.speed ?: "Desconocida"}"
+        binding.strengthStatsTextView.text = "${superhero.powerStats.strength ?: "Desconocida"}"
+        binding.durabilityStatsTextView.text = "${superhero.powerStats.durability ?: "Desconocida"}"
+        binding.intelligenceStatsTextView.text = "${superhero.powerStats.intelligence ?: "Desconocida"}"
+        binding.combatStatsTextView.text = "${superhero.powerStats.combat ?: "Desconocida"}"
+
         Picasso.get().load(superhero.urlImage.url).into(binding.avatarImageView)
 
     }
@@ -63,5 +99,31 @@ class DestailsActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    private fun flipCard() {
+        binding.card.animate()
+            .rotationY(90f)
+            .setDuration(300)
+            .setInterpolator(DecelerateInterpolator())
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    if (isFrontVisible) {
+                        binding.frontCard.visibility = View.GONE
+                        binding.backCard.visibility = View.VISIBLE
+                    } else {
+                        binding.backCard.visibility = View.GONE
+                        binding.frontCard.visibility = View.VISIBLE
+                    }
+                    isFrontVisible = !isFrontVisible
+
+                    binding.card.rotationY = -90f
+                    binding.card.animate()
+                        .rotationY(0f)
+                        .setDuration(300)
+                        .setInterpolator(DecelerateInterpolator())
+                        .setListener(null)
+                }
+            })
     }
 }

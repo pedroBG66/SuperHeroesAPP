@@ -1,21 +1,244 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/details_activity"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context=".activities.MainActivity">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:id="@+id/details_activity"
+    android:padding="10dp"
 
-    <ImageView
+    >
+
+    <!-- Tarjeta con estilo Glass -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:id="@+id/avatarImageView"
-        android:scaleType="centerCrop"
-        android:layout_margin="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-    </ImageView>
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:padding="20dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp"
+        android:background="@drawable/glass_gradient"
+        >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/frontCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="30dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/glass_gradient"
+            android:visibility="gone"
+
+            >
+
+            <!-- Imagen del superhéroe -->
+            <ImageView
+                android:id="@+id/avatarImageView"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:paddingBottom="25dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@drawable/round_outline"
+                android:clipToOutline="true"
+                android:contentDescription="Imagen del superhéroe" />
+
+            <!-- Nombre del superhéroe -->
+            <TextView
+                android:id="@+id/superHeroNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginBottom="100dp"
+                app:layout_constraintTop_toBottomOf="@id/avatarImageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="Superman" />
+
+            <!-- Datos biográficos -->
+
+            <TextView
+                android:id="@+id/realNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                app:layout_constraintTop_toBottomOf="@id/superHeroNameTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="Nombre real: Clark Kent" />
+            <TextView
+                android:id="@+id/birthPlaceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintTop_toBottomOf="@id/realNameTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="14sp"
+                tools:text="lugar de nacimiento: Sevilla" />
+
+            <TextView
+                android:id="@+id/firstAppearanceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/birthPlaceTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="14sp"
+                tools:text="Primera aparición: 1938" />
+
+
+            <!-- Datos de apariencia (GridLayout) -->
+            <androidx.gridlayout.widget.GridLayout
+                android:id="@+id/appearanceGrid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                app:columnCount="4"
+                app:layout_constraintTop_toBottomOf="@id/firstAppearanceTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Apariencia: Género -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Género:"
+                    android:textStyle="bold"
+                    android:padding="4dp" />
+
+                <TextView
+                    android:id="@+id/genderTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Masculino"
+                    android:padding="4dp" />
+
+                <!-- Apariencia: Altura -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Altura:"
+                    android:textStyle="bold"
+                    android:padding="4dp" />
+
+                <TextView
+                    android:id="@+id/heightTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="190 cm"
+                    android:padding="4dp" />
+
+                <!-- Apariencia: Peso -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Peso:"
+                    android:textStyle="bold"
+                    android:padding="4dp" />
+
+                <TextView
+                    android:id="@+id/weightTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="95 kg"
+                    android:padding="4dp" />
+
+                <!-- Apariencia: Raza -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Raza:"
+                    android:textStyle="bold"
+                    android:padding="4dp" />
+
+                <TextView
+                    android:id="@+id/raceTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Kryptoniano"
+                    android:padding="4dp" />
+
+            </androidx.gridlayout.widget.GridLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/backCard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="visible">
+
+                <androidx.gridlayout.widget.GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:columnCount="4"
+                    android:gravity="center"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/powerStatsTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Power Stats"
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:layout_marginBottom="16dp" />
+                    <TextView
+                        android:id="@+id/powerStatsTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        tools:text="Strength: 85\nSpeed: 90\nDurability: 80" />
+
+                    <TextView
+                        android:id="@+id/speedStatsTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        tools:text="Strength: 85\nSpeed: 90\nDurability: 80" />
+                    <TextView
+                        android:id="@+id/strengthStatsTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        tools:text="Strength: 85\nSpeed: 90\nDurability: 80" />
+                    <TextView
+                        android:id="@+id/durabilityStatsTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        tools:text="Strength: 85\nSpeed: 90\nDurability: 80" />
+                    <TextView
+                        android:id="@+id/intelligenceStatsTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        tools:text="Strength: 85\nSpeed: 90\nDurability: 80" />
+                    <TextView
+                        android:id="@+id/combatStatsTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        tools:text="Strength: 85\nSpeed: 90\nDurability: 80" />
+
+                </androidx.gridlayout.widget.GridLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

@@ -1,19 +1,23 @@
 package com.example.superheroesapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.superheroesapp.R
-import com.example.superheroesapp.data.HeroesResponse
 import com.example.superheroesapp.utils.RetrofitProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import android.util.Log
 import android.view.Menu
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.superheroesapp.adaters.SuperheroAdapter
 import com.example.superheroesapp.data.SuperHero
+import com.example.superheroesapp.databinding.ActivityDetailLayoutBinding
 import com.example.superheroesapp.databinding.ActivityMainBinding
 
 
@@ -27,15 +31,32 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = SuperheroAdapter(superheroList)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        adapter = SuperheroAdapter(superheroList) { position ->
+            val superhero = superheroList[position]
+            navigateToDetail(superhero)
+        }
+
         binding.recyclerViewLayout.adapter = adapter
         binding.recyclerViewLayout.layoutManager = GridLayoutManager(this, 2)
 
-        searchSuperHeroes("bat")
+        searchSuperHeroes("a")
+    }
+
+    private fun navigateToDetail(superhero: SuperHero) {
+        val intent = Intent(this, DetailsActivity::class.java)
+        intent.putExtra(DetailsActivity.EXTRA_SUPERHERO_ID, superhero.id)
+        startActivity(intent)
     }
 
 
@@ -67,6 +88,7 @@ class MainActivity : AppCompatActivity() {
 
                 CoroutineScope(Dispatchers.Main).launch {
                     if (result.response == "success") {
+                        superheroList = result.results
                         adapter.updateItems(result.results)
                     } else {
                         // TODO: Mostrar mensaje de que no se ha encontrado nada
