@@ -81,7 +81,12 @@ class DetailsActivity : AppCompatActivity() {
         binding.intelligenceStatsTextView.text = "${superhero.powerStats.intelligence ?: "Desconocida"}"
         binding.combatStatsTextView.text = "${superhero.powerStats.combat ?: "Desconocida"}"
 
+
+        binding.avgPowerStats.text = avgStats(superhero)
+
+
         Picasso.get().load(superhero.urlImage.url).into(binding.avatarImageView)
+        Picasso.get().load(superhero.urlImage.url).into(binding.avatarImageViewBackCard)
 
     }
 
@@ -125,5 +130,21 @@ class DetailsActivity : AppCompatActivity() {
                         .setListener(null)
                 }
             })
+    }
+
+    fun avgStats(superhero: SuperHero): String {
+        val stats = listOfNotNull(
+            superhero.powerStats.power?.toIntOrNull(),
+            superhero.powerStats.speed?.toIntOrNull(),
+            superhero.powerStats.combat?.toIntOrNull(),
+            superhero.powerStats.strength?.toIntOrNull(),
+            superhero.powerStats.intelligence?.toIntOrNull(),
+            superhero.powerStats.durability?.toIntOrNull()
+        )
+        return if (stats.isNotEmpty()) {
+            (stats.sum() / stats.size).toString()
+        } else {
+            "unknown"
+        }
     }
 }
